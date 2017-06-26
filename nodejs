@@ -1,0 +1,62 @@
+et the base image to centos 7 from public's registry
+FROM Centos7
+
+# File Author / Maintainer
+MAINTAINER chennarao vemula <chennarao.vemula@gmail.com>
+
+# Install Node.js and other dependencies
+
+RUN curl --silent --location https://rpm.nodesource.com/setup_5.x | bash - && \
+
+	curl --silent --location https://rpm.nodesource.com/setup_5.x | bash - && \
+
+	    yum update -y && \
+
+	        yum install -y nodejs gcc-c++ make && \
+
+		    yum clean all -y && \
+
+		        npm install -g gulp-cli bower
+				
+				# Expose portNIOdeNOde
+
+				EXPOSE 8080
+
+				# Set env variables for node app
+
+				ENV OPENSHIFT_NODEJS_PORT 8080
+
+				ENV NODEJS_VERSION 5.x
+
+				 # Define working directory and copy source files in
+
+				 RUN mkdir -p /www
+
+				 WORKDIR /www
+
+				 COPY . /www
+
+				  
+
+				  # install deps
+
+				  RUN npm install && \
+
+				      bower install --allow-root && \
+
+				          gulp build
+
+					      
+
+					      # run as non-root user
+
+					      RUN chown -R 1001:1001 /www
+
+					      USER 1001
+
+					       
+
+					       # Run app using nodemon
+
+					       CMD ["npm", "start"]
+
