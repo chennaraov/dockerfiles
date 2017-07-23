@@ -1,7 +1,7 @@
 # Use latest jboss/base-jdk:7 image as the base
 FROM jboss/base-jdk:7
 
-MAINTAINER Hiram Chirino <hchirino@redhat.com>
+MAINTAINER Chenna Vemula <chennarao.py@gmail.com.com>
 
 # Set the FUSE_VERSION env variable
 ENV FUSE_VERSION 6.2.0.redhat-059
@@ -33,5 +33,3 @@ VOLUME /opt/jboss/jboss-fuse/deploy
 
 # lets default to the jboss-fuse dir so folks can more easily navigate to around the server install
 WORKDIR /opt/jboss/jboss-fuse
-
-

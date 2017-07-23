@@ -1,39 +1,33 @@
-et the base image to centos 7
+# Get the base image to centos 7
 	FROM /centos:7
 	# File Author / Maintainer
-		MAINTAINER Chenna Vemula <chennarao.vemula@gmail.com>
+		MAINTAINER Chenna Vemula <chennarao.py@gmail.com>
 		# Install Node.js and other dependencies RUN curl --silent --location https://rpm.nodesource.com/setup_6.x | bash - && \
 		    yum update -y && \
-		            yum install -y git nodejs gcc-c++ make && \
-			    	grep -q 'registry = '$npmcp.npmrc || echo 'registry = Artifactory Link >> $npmrepocp.npmrc && \
-					    yum clean all -y
-					    # Expose port
-					    	    EXPOSE 8080
-						    # Set env variables for node app- This environment variables must be depends up where we are deploying image  
-						    	    ENV OPENSHIFT_NODEJS_PORT 8080
-							    	    ENV NODEJS_VERSION 6.x
-								    	    ENV NODE_ENV dev
-									    # Define working directory and copy source files in
-									    	    RUN mkdir -p /vegas-stmt-tool-api
-										    	    WORKDIR /vegas-stmt-tool-api
-											    	    COPY . /vegas-stmt-tool-api
-												    # install deps
-
-												    RUN npm install 
-												    	#&& \
-
-														#    bower install --allow-root && \
-
-																#        gulp build
-																# run as non-root user
-																	    RUN chown -R 1001:1001 /vegas-stmt-tool-api
-																	    	    USER 1001
-																		    # Run app using nodemon -This we can use depends up on the developer script, it must be sync with the developer code config.
-
-																		    	     CMD ["node", "bin/www"]
-																			     	
-																				#	CMD ["npm", "start"]
-																				#	CMD ["node", "app.js"]
-																				#	CMD ["node", "server.js"]
-																				#	CMD ["$RUN_SCRIPTS_PATH/usage"]
-
+	 yum install -y git nodejs gcc-c++ make && \
+		grep -q 'registry = '$npmcp.npmrc || echo 'registry = Artifactory Link >> $npmrepocp.npmrc && \
+	 yum clean all -y
+# Expose port
+		EXPOSE 8080
+# Set env variables for node app- This environment variables must be depends up where we are deploying image
+			ENV OPENSHIFT_NODEJS_PORT 8080
+			ENV NODEJS_VERSION 6.x
+			ENV NODE_ENV dev
+# Define working directory and copy source files in
+			 RUN mkdir -p /www
+			 WORKDIR /www
+			COPY . /vegas-stmt-tool-api
+# install deps
+		RUN npm install
+				#&& \
+#    bower install --allow-root && \
+#        gulp build
+# run as non-root user
+   RUN chown -R 1001:1001 /vegas-stmt-tool-api
+   USER 1001
+# Run app using nodemon -This we can use depends up on the developer script, it must be sync with the developer code config.
+  CMD ["node", "bin/www"]
+#	CMD ["npm", "start"]
+#	CMD ["node", "app.js"]
+#	CMD ["node", "server.js"]
+#	CMD ["$RUN_SCRIPTS_PATH/usage"]

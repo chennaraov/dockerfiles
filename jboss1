@@ -1,5 +1,4 @@
 
-
 ## use the openshift s2i image
 FROM registry.access.redhat.com/jboss-eap-6/eap-openshift:6.4
  
@@ -8,7 +7,6 @@ EXPOSE 8080 8443 8888
  
 ## copy our war file to deployments and renames to ROOT.war
 ADD . $JBOSS_HOME/standalone/deployments/
+
 ## File MUST be renamed to ROOT.ear/ROOT.war in order for it to load.
-ADD  vegas-services-war/target/vegas-services-war.w$JBOSS_HOME/standalone/deployments/ROOT.war
-
-
+ADD  <Workspace .war file>  $JBOSS_HOME/standalone/deployments/ROOT.war

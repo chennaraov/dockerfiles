@@ -1,0 +1,22 @@
+FROM centos7
+
+MAINTAINER Chenna Vemula <chennarao.py@gmail.com>
+
+EXPOSE 9410 9411
+
+ENV JAVA_VER=1.8.0
+
+RUN yum install -y wget \
+	yum install -y java-1.8.0-openjdk-headless \
+	yum clean all
+
+RUN mkdir /zipkin
+WORKDIR /zipkin
+
+RUN wget -O zipkin.jar 'https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec'
+
+RUN chown -R 1001:1001 /zipkin
+
+USER 1001
+
+CMD ["java","-jar","zipkin.jar"]

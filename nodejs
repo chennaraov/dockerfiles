@@ -1,62 +1,46 @@
-et the base image to centos 7 from public's registry
+#get the base image to centos 7 from public's registry
 FROM Centos7
 
 # File Author / Maintainer
-MAINTAINER chennarao vemula <chennarao.vemula@gmail.com>
+MAINTAINER chennarao vemula <chennarao.py@gmail.com>
 
 # Install Node.js and other dependencies
 
 RUN curl --silent --location https://rpm.nodesource.com/setup_5.x | bash - && \
+   curl --silent --location https://rpm.nodesource.com/setup_5.x | bash - && \
+    yum update -y && \
+      yum install -y nodejs gcc-c++ make && \
+          yum clean all -y && \
+              npm install -g gulp-cli bower
 
-	curl --silent --location https://rpm.nodesource.com/setup_5.x | bash - && \
+# Expose port
 
-	    yum update -y && \
+	EXPOSE 8080
 
-	        yum install -y nodejs gcc-c++ make && \
+# Set env variables for node app
 
-		    yum clean all -y && \
+	ENV OPENSHIFT_NODEJS_PORT 8080
 
-		        npm install -g gulp-cli bower
-				
-				# Expose portNIOdeNOde
+	ENV NODEJS_VERSION 5.x
 
-				EXPOSE 8080
+# Define working directory and copy source files in
 
-				# Set env variables for node app
+		RUN mkdir -p /www
 
-				ENV OPENSHIFT_NODEJS_PORT 8080
+	  WORKDIR /www
 
-				ENV NODEJS_VERSION 5.x
+	  COPY . /www
+# install deps
 
-				 # Define working directory and copy source files in
+ RUN npm install && \
+   bower install --allow-root && \
+  	gulp build
 
-				 RUN mkdir -p /www
+# run as non-root user
 
-				 WORKDIR /www
+	 RUN chown -R 1001:1001 /www
 
-				 COPY . /www
+  USER 1001
+# Run app using nodemon
 
-				  
-
-				  # install deps
-
-				  RUN npm install && \
-
-				      bower install --allow-root && \
-
-				          gulp build
-
-					      
-
-					      # run as non-root user
-
-					      RUN chown -R 1001:1001 /www
-
-					      USER 1001
-
-					       
-
-					       # Run app using nodemon
-
-					       CMD ["npm", "start"]
-
+	CMD ["npm", "start"]
