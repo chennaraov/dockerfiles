@@ -8,7 +8,12 @@ ENV SONAR_VERSION=6.7.1 \
     SONARQUBE_JDBC_PASSWORD=sonar \
     SONARQUBE_JDBC_URL=
 
+RUN yum install -y wget \
+	yum install -y java-1.8.0-openjdk-headless \
+	yum clean all
+
 ENV JAVA_VER=1.8.0
+
 ARG MAVEN_VERSION=3.5.2
 ARG USER_HOME_DIR="/root"
 ARG SHA=707b1f6e390a65bde4af4cdaf2a24d45fc19a6ded00fff02e91626e3e42ceaff
@@ -23,12 +28,6 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
-
-
-
-RUN yum install -y wget \
-	yum install -y java-1.8.0-openjdk-headless \
-	yum clean all
 
 # Http port
 EXPOSE 9000
@@ -53,7 +52,6 @@ RUN set -x \
     # uid                  sonarsource_deployer (Sonarsource Deployer) <infra@sonarsource.com>
     # sub   2048R/06855C1D 2015-05-25
     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys F1182E81C792928921DBCAB4CFCA4A29D26468DE \
-
     && cd /opt \
     && curl -o sonarqube.zip -fSL https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-$SONAR_VERSION.zip \
     && curl -o sonarqube.zip.asc -fSL https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-$SONAR_VERSION.zip.asc \
