@@ -1,5 +1,13 @@
-FROM gcc:4.4
+FROM ubuntu:14.04
+
+RUN wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gcc-4.4/gcc-4.4-base_4.4.7-8ubuntu1_amd64.deb
+
+RUN dpkg -i gcc-4.4-base_4.4.7-8ubuntu1_amd64.deb
+
 COPY . /usr/src/myapp
+
 WORKDIR /usr/src/myapp
+
 RUN gcc -o myapp main.c
+
 CMD ["./myapp"]
