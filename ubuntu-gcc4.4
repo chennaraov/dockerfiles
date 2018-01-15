@@ -1,12 +1,4 @@
-FROM ubuntu:14.04
-
-RUN apt-get -y update 
-
-RUN apt-get install -y wget
-
-RUN wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gcc-4.4/gcc-4.4-base_4.4.7-8ubuntu1_amd64.deb
-
-RUN dpkg -i gcc-4.4-base_4.4.7-8ubuntu1_amd64.deb
+FROM chennaraov/gcc:4.4
 
 COPY . /usr/src/myapp
 
